@@ -26,7 +26,9 @@ export default function NavBar() {
               Login
             </Button>
           </Link>
-          <Button className="cursor-pointer">Sign up</Button>
+          <Link href={"/register"}>
+            <Button className="cursor-pointer">Sign up</Button>
+          </Link>
         </div>
       </div>
     </nav>
