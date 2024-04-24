@@ -21,9 +21,11 @@ export default function NavBar() {
           </li>
         </ul>
         <div className=" space-x-4">
-          <Button color="indigo" className="cursor-pointer" variant="outline">
-            Login
-          </Button>
+          <Link href={"/login"}>
+            <Button color="indigo" className="cursor-pointer" variant="outline">
+              Login
+            </Button>
+          </Link>
           <Button className="cursor-pointer">Sign up</Button>
         </div>
       </div>
