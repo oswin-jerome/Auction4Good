@@ -14,7 +14,7 @@ export default function NavBar() {
             <Link href={"/"}>Home</Link>
           </li>
           <li className="text-zinc-500 hover:text-zinc-800">
-            <Link href={"/"}>Auctions</Link>
+            <Link href={"/auctions"}>Auctions</Link>
           </li>
           <li className="text-zinc-500 hover:text-zinc-800">
             <Link href={"/"}>About</Link>
