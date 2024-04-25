@@ -1,6 +1,7 @@
 import Image from "next/image";
 import hero from "@/assets/hero.jpg";
 import { Button } from "@radix-ui/themes";
+import { registerUser } from "@/actions/user";
 export default function Home() {
   return (
     <div className="container relative py-4 pt-28">
