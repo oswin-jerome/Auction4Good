@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@radix-ui/themes";
@@ -5,7 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import hero from "@/assets/hero.jpg";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 export default function LoginPage() {
+  const search = useSearchParams();
+
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -15,6 +20,7 @@ export default function LoginPage() {
             <p className="text-balance text-muted-foreground">Enter your email below to login to your account</p>
           </div>
           <div className="grid gap-4">
+            {search.has("error") && <p className="text-red-500 text-center text-sm">Credentials didn't match</p>}
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" placeholder="m@example.com" required />
@@ -28,7 +34,19 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full">
+            <Button
+              onClick={async () => {
+                const res = await signIn("credentials", {
+                  username: "oswin@gmail.com",
+                  password: "12345",
+                  redirect: true,
+                  callbackUrl: "/",
+                });
+                console.log(res);
+              }}
+              type="submit"
+              className="w-full"
+            >
               Login
             </Button>
             <Button variant="outline" className="w-full">
