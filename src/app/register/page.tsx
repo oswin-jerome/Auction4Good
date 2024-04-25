@@ -7,11 +7,12 @@ import { Label } from "@/components/ui/label";
 import { registerUserSchema } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@radix-ui/themes";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { set, z } from "zod";
-
+import logo from "@/assets/logo.svg";
 type RegisterData = z.infer<typeof registerUserSchema>;
 
 export default function RegisterPage() {
@@ -54,7 +55,11 @@ export default function RegisterPage() {
       <Card className="mx-auto max-w-sm mt-20">
         <CardHeader>
           {isSubmitSuccessful && <p className="text-green-600 bg-green-600/10 p-2 rounded">Registered</p>}
+
+          <Image src={logo} className="mx-auto mb-8" alt="Logo" />
+
           <CardTitle className="text-xl">Sign Up</CardTitle>
+
           <CardDescription>Enter your information to create an account</CardDescription>
         </CardHeader>
         <CardContent>
