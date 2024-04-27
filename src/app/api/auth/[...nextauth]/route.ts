@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import NextAuth from "next-auth";
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+import NextAuth, { getServerSession } from "next-auth";
 
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -42,3 +43,7 @@ const handler = NextAuth({
 });
 
 export { handler as GET, handler as POST };
+
+export function auth(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
+  return getServerSession(...args, handler);
+}

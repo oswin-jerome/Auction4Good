@@ -43,7 +43,7 @@ export default function LoginPage() {
                 username: data.email,
                 password: data.password,
                 redirect: true,
-                callbackUrl: "/?login=success",
+                callbackUrl: search.has("callbackUrl") ? search.get("callbackUrl") ?? "" : "/?login=success",
               });
               console.log(res);
             })}

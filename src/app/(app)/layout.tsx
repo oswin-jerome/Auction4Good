@@ -18,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className="min-h-screen grid">
       <NavBar />
-      {children}
+      <div className="py-4 pt-24 flex-grow h-full ">{children}</div>
     </div>
   );
 }
