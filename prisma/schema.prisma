@@ -14,10 +14,24 @@ datasource db {
 }
 
 model User {
-  id         Int    @id @default(autoincrement())
-  email      String @unique
-  phone      String @unique
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  phone      String    @unique
   first_name String
   last_name  String
   password   String
+  Auction    Auction[]
+}
+
+model Auction {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  description        String   @db.LongText
+  start_date         DateTime
+  end_date           DateTime
+  starting_bid_price BigInt
+  user_id            Int
+  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("auctions")
 }

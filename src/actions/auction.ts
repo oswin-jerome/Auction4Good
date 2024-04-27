@@ -1,0 +1,30 @@
+"use server";
+
+import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { createAuctionSchema } from "@/zod/schemas";
+import { Prisma, PrismaClient } from "@prisma/client";
+
+import { getToken } from "next-auth/jwt";
+import { getSession } from "next-auth/react";
+
+export const createAuction = async (auction: Object) => {
+  const validation = createAuctionSchema.safeParse(auction);
+  if (!validation.success) {
+    return {
+      success: false,
+      errors: validation.error.errors,
+    };
+  }
+
+  const prisma = new PrismaClient();
+  const res = await prisma.auction.create({
+    data: {
+      ...validation.data,
+      user_id: 1,
+    },
+  });
+
+  return {
+    success: true,
+  };
+};
