@@ -2,6 +2,7 @@
 
 import { HOST_AUCTIONS } from "@/app/routes";
 import { auth } from "@/auth";
+import { db } from "@/lib/db";
 // import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { createAuctionSchema } from "@/zod/schemas";
 import { Prisma, PrismaClient } from "@prisma/client";
@@ -32,7 +33,7 @@ export const createAuction = async (auction: Object, formData: FormData) => {
     };
   }
   delete validation.data["image"];
-  const prisma = new PrismaClient();
+  const prisma = db;
   const res = await prisma.auction.create({
     data: {
       ...validation.data,
@@ -47,7 +48,7 @@ export const createAuction = async (auction: Object, formData: FormData) => {
 };
 
 export const getAllAuctions = async () => {
-  const prisma = new PrismaClient();
+  const prisma = db;
   const auctions = await prisma.auction.findMany();
 
   return auctions;

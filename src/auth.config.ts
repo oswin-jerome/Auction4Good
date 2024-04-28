@@ -2,6 +2,7 @@ import GitHub from "next-auth/providers/github";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
+import { db } from "./lib/db";
 
 export default {
   providers: [
@@ -15,9 +16,7 @@ export default {
       },
 
       async authorize(credentials, req) {
-        const prisma = new PrismaClient();
-
-        const user = await prisma.user.findFirst({
+        const user = await db.user.findFirst({
           where: {
             AND: [
               {

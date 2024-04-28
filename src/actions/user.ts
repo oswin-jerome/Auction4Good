@@ -1,4 +1,5 @@
 "use server";
+import { db } from "@/lib/db";
 import { registerUserSchema } from "@/zod/schemas";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientValidationError } from "@prisma/client/runtime/react-native.js";
@@ -12,9 +13,8 @@ export const registerUser = async (user: Object) => {
     };
   }
 
-  const prisma = new PrismaClient();
   try {
-    const userData = await prisma.user.create({
+    const userData = await db.user.create({
       data: validation.data,
     });
 
