@@ -1,4 +1,4 @@
-import NextAuth, { DefaultUser, type DefaultSession } from "next-auth";
+import NextAuth, { type DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   /**
@@ -8,10 +8,6 @@ declare module "next-auth" {
     user: {
       user_id: number;
     } & DefaultSession["user"];
-  }
-
-  interface User extends DefaultUser {
-    user_id: number;
   }
 }
 
