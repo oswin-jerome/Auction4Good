@@ -31,3 +31,10 @@ export const createAuction = async (auction: Object) => {
     success: true,
   };
 };
+
+export const getAllAuctions = async () => {
+  const prisma = new PrismaClient();
+  const auctions = await prisma.auction.findMany();
+
+  return auctions;
+};

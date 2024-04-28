@@ -5,7 +5,9 @@ import React from "react";
 import hero from "@/assets/hero.jpg";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-export default function Auctions() {
+import { getAllAuctions } from "@/actions/auction";
+export default async function Auctions() {
+  const auctions = await getAllAuctions();
   const items = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
@@ -46,15 +48,15 @@ export default function Auctions() {
           </Link>
         </Callout.Root>
         <section className="grid md:grid-cols-3 grid-rows-2 gap-4">
-          {items.map((item, i) => {
+          {auctions.map((auction, i) => {
             return (
               <Card key={i}>
                 <Image src={hero} alt="" className="rounded mb-2" />
                 <div>
-                  <h4 className="font-bold">Product Name</h4>
-                  <p className="text-sm">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab, commodi.</p>
+                  <h4 className="font-bold">{auction.title}</h4>
+                  <p className="text-sm">{auction.description}</p>
                   <div className="mt-8 flex justify-between items-center">
-                    <h5 className="font-bold text-lg">Rs. 500</h5>
+                    <h5 className="font-bold text-lg">Rs. {auction.starting_bid_price.toString()}</h5>
                     <Button className="px-4 flex gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.0} stroke="currentColor" className="w-5 h-5">
                         <path
