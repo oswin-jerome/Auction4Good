@@ -24,7 +24,20 @@ export default function CreateAuctionPage() {
     <div className="">
       <form
         onSubmit={handleSubmit(async (data) => {
-          const res = await createAuction(data);
+          const f = new FormData();
+          f.set("image", data.image?.[0]);
+          const res = await createAuction(
+            {
+              ...data,
+              image: [
+                {
+                  size: data.image?.[0].size,
+                  type: data.image?.[0].type,
+                },
+              ],
+            },
+            f
+          );
           console.log(res);
           if (res.success) {
             reset();
@@ -32,6 +45,11 @@ export default function CreateAuctionPage() {
         })}
         className="grid gap-4"
       >
+        <div className="input">
+          <Label>Images</Label>
+          <input {...register("image", {})} type="file"></input>
+          <ErrorMessage error={errors.image?.message?.toString()} />
+        </div>
         <div className="input">
           <Label>Title</Label>
           <TextField.Root {...register("title")} size={"3"}></TextField.Root>
