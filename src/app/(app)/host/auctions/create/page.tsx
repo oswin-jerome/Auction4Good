@@ -5,7 +5,8 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { Label } from "@/components/ui/label";
 import { createAuctionSchema } from "@/zod/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextArea, TextField } from "@radix-ui/themes";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { Button, Callout, TextArea, TextField, ThickCheckIcon } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -94,6 +95,14 @@ export default function CreateAuctionPage() {
             ></TextField.Root>
             <ErrorMessage error={errors.end_date?.message} />
           </div>
+          {isSubmitSuccessful && (
+            <Callout.Root size={"1"} className="col-span-2" color="grass">
+              <Callout.Icon>
+                <CheckCircledIcon />
+              </Callout.Icon>
+              <Callout.Text>Auction Created</Callout.Text>
+            </Callout.Root>
+          )}
           <div className="flex justify-center col-span-2 mt-8">
             <Button disabled={isSubmitting} className="cursor-pointer">
               Create
