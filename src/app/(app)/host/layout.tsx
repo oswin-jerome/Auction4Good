@@ -4,6 +4,7 @@ import { BellIcon, DashboardIcon, HomeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { HOST_AUCTIONS, HOST_AUCTION_CREATE } from "@/app/routes";
 export default function HostLayout({ children }: { children: ReactNode }) {
   const path = usePathname();
 
@@ -12,11 +13,13 @@ export default function HostLayout({ children }: { children: ReactNode }) {
       href: "/host",
       icon: <DashboardIcon />,
       label: "Dashboard",
+      keepActiveFor: [],
     },
     {
-      href: "/host/auctions/create",
+      href: HOST_AUCTIONS,
       icon: <BellIcon />,
       label: "Auctions",
+      keepActiveFor: [HOST_AUCTION_CREATE],
     },
   ];
 
@@ -26,7 +29,7 @@ export default function HostLayout({ children }: { children: ReactNode }) {
         <ul className="space-y-2">
           {menus.map((menu, i) => {
             return (
-              <li key={i} className={cn({ "flex gap-2 items-center  p-2 rounded cursor-pointer hover:bg-blue-100 hover:text-slate-800": true, "bg-blue-500 text-white": path === menu.href })}>
+              <li key={i} className={cn({ "flex gap-2 items-center  p-2 rounded cursor-pointer hover:bg-blue-100 hover:text-slate-800": true, "bg-blue-500 text-white": path === menu.href || menu.keepActiveFor.includes(path) })}>
                 <Link className="flex gap-2 items-center" href={menu.href}>
                   {menu.icon} {menu.label}
                 </Link>

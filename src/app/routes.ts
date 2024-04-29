@@ -9,6 +9,7 @@ export const REGISTER = "/register";
 export const AUTH_API = "/api/auth";
 
 export const HOST_AUCTIONS = "/host/auctions";
+export const HOST_AUCTION_CREATE = "/host/auctions/create";
 
 /**
  * List of routes which can be accessed public
