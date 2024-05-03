@@ -21,6 +21,12 @@ model User {
   last_name  String
   password   String
   Auction    Auction[]
+  plan       Plan      @default(FREE)
+}
+
+enum Plan {
+  FREE
+  PREMIUM
 }
 
 model Auction {
