@@ -22,6 +22,8 @@ model User {
   password   String
   Auction    Auction[]
   plan       Plan      @default(FREE)
+
+  order_id String? @unique
 }
 
 enum Plan {

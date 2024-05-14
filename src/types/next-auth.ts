@@ -21,3 +21,9 @@ declare module "next-auth/jwt" {
     } & DefaultSession["user"];
   }
 }
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
