@@ -54,7 +54,7 @@ export default async function Auctions() {
                 <Image src={hero} alt="" className="rounded mb-2" />
                 <div>
                   <h4 className="font-bold">{auction.title}</h4>
-                  <p className="text-sm">{auction.description}</p>
+                  <p className="text-sm line-clamp-1">{auction.description}</p>
                   <div className="mt-8 flex justify-between items-center">
                     <h5 className="font-bold text-lg">Rs. {auction.starting_bid_price.toString()}</h5>
                     <Button className="px-4 flex gap-2">
