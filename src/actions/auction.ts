@@ -83,3 +83,13 @@ export const getMyAuctions = async () => {
 
   return auctions;
 };
+
+export const getAuctionByUUID = async (uuid: string) => {
+  const auction = await db.auction.findUnique({
+    where: {
+      id: uuid,
+    },
+  });
+
+  return auction;
+};
