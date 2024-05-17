@@ -23,7 +23,7 @@ export default function NavBar() {
             <Link href={"/auctions"}>Auctions</Link>
           </li>
           <li className="text-zinc-500 hover:text-zinc-800">
-            <Link href={"/"}>About</Link>
+            <Link href={"/about"}>About</Link>
           </li>
         </ul>
         {["unauthenticated", "loading"].includes(status) && (
@@ -40,8 +40,10 @@ export default function NavBar() {
         )}
         {status == "authenticated" && (
           <div className="flex gap-4 items-center">
-            <Avatar size={"1"} fallback />
-            <Text className="mr-4">{data.user?.name}</Text>
+            <Link href={"/host"} className="space-x-4">
+              <Avatar size={"1"} fallback />
+              <Text className="mr-4">{data.user?.name}</Text>
+            </Link>
             <Button
               className="cursor-pointer"
               variant="outline"
