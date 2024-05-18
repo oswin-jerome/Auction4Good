@@ -31,3 +31,7 @@ export const createAuctionSchema = z.object({
       return ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type);
     }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
 });
+
+export const addBidSchema = z.object({
+  amount: z.number().min(1, "Required"),
+});

@@ -6,6 +6,7 @@ import hero from "@/assets/hero.jpg";
 import { Avatar, Badge, Card, Heading, Text } from "@radix-ui/themes";
 import { formatDate } from "@/lib/utils";
 import CreateForm from "./createForm";
+import { getBidsByAuctionId } from "@/actions/bid";
 
 const getAuction = async (uuid: string) => {
   const auction = await getAuctionByUUID(uuid);
@@ -17,6 +18,7 @@ const getAuction = async (uuid: string) => {
 
 export default async function AuctionDetailsPage({ params }: any) {
   const auction = await getAuction(params.uuid);
+  const bids = await getBidsByAuctionId(auction.id, 3);
   return (
     <div className="container">
       <div className="grid md:grid-cols-[500px,auto] gap-8">
@@ -57,20 +59,27 @@ export default async function AuctionDetailsPage({ params }: any) {
           <div className="mt-8">
             <div className="flex items-center justify-between">
               <Heading size="5">Top Bids</Heading>
-              <CreateForm minBid={auction.starting_bid_price} />
+              <CreateForm minBid={auction.starting_bid_price} auctionId={auction.id} />
             </div>
             <div className="mt-4 grid gap-4">
-              {[1, 2, 3].map((bid) => {
+              {bids.map((bid) => {
                 return (
-                  <Card key={bid} className="flex items-center justify-between">
+                  <Card key={bid.id} className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <Avatar fallback />
+                      <Avatar fallback src={"https://ui-avatars.com/api/?background=random&name=" + bid.user.first_name} />
                       <div>
-                        <Text weight={"bold"}>Oswin Jerome</Text>
+                        <Text weight={"bold"}>
+                          {bid.user.first_name} {bid.user.last_name}
+                        </Text>
                       </div>
                     </div>
                     <div>
-                      <Heading>Rs. 500</Heading>
+                      <Heading>
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "INR",
+                        }).format(bid.amount)}
+                      </Heading>
                     </div>
                   </Card>
                 );

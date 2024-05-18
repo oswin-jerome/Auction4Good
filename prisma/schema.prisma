@@ -24,6 +24,7 @@ model User {
   plan       Plan      @default(FREE)
 
   order_id String? @unique
+  Bid      Bid[]
 }
 
 enum Plan {
@@ -40,6 +41,16 @@ model Auction {
   starting_bid_price BigInt
   user_id            Int
   user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Bid                Bid[]
 
   @@map("auctions")
+}
+
+model Bid {
+  id        String  @id @default(uuid())
+  amount    BigInt
+  auction   Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  auctionId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
 }
