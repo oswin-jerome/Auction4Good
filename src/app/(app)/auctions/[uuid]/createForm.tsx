@@ -13,10 +13,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-function CreateForm({ minBid, auctionId }: { minBid: BigInt; auctionId: string }) {
+function CreateForm({ minBid, auctionId, topBid }: { minBid: BigInt; auctionId: string; topBid: number }) {
   const [open, setOpen] = useState(false);
   const addBidSchema = z.object({
-    amount: z.number().min(Number(minBid), "Minimum Bid for this auctions is " + minBid),
+    amount: z
+      .number()
+      .min(Number(minBid), "Minimum Bid for this auctions is " + minBid)
+      .min(topBid, `A Bid of Rs. ${topBid} has been made on this auction`),
   });
 
   type T = z.infer<typeof addBidSchema>;

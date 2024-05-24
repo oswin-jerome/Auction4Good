@@ -59,7 +59,7 @@ export default async function AuctionDetailsPage({ params }: any) {
           <div className="mt-8">
             <div className="flex items-center justify-between">
               <Heading size="5">Top Bids</Heading>
-              <CreateForm minBid={auction.starting_bid_price} auctionId={auction.id} />
+              <CreateForm minBid={auction.starting_bid_price} topBid={Number(bids[0].amount) ?? auction.starting_bid_price} auctionId={auction.id} />
             </div>
             <div className="mt-4 grid gap-4">
               {bids.map((bid) => {
