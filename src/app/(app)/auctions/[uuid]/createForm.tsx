@@ -6,20 +6,38 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Auction } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-function CreateForm({ minBid, auctionId, topBid }: { minBid: BigInt; auctionId: string; topBid: number }) {
+function CreateForm({
+  minBid,
+  auctionId,
+  topBid,
+  auction,
+}: {
+  minBid: BigInt;
+  auctionId: string;
+  topBid: number;
+  auction: Auction;
+}) {
   const [open, setOpen] = useState(false);
   const addBidSchema = z.object({
     amount: z
       .number()
       .min(Number(minBid), "Minimum Bid for this auctions is " + minBid)
-      .min(topBid, `A Bid of Rs. ${topBid} has been made on this auction`),
+      .min(topBid + 1, `A Bid of Rs. ${topBid} has been made on this auction`),
   });
 
   type T = z.infer<typeof addBidSchema>;
@@ -44,6 +62,7 @@ function CreateForm({ minBid, auctionId, topBid }: { minBid: BigInt; auctionId: 
     >
       <SheetTrigger asChild>
         <Button
+          disabled={auction.status != "OPEN"}
           onClick={() => {
             setOpen(true);
           }}
@@ -54,7 +73,10 @@ function CreateForm({ minBid, auctionId, topBid }: { minBid: BigInt; auctionId: 
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Place your bid</SheetTitle>
-          <SheetDescription>Your bid amount cannot be lesser than minimum bid or the top bid amount</SheetDescription>
+          <SheetDescription>
+            Your bid amount cannot be lesser than minimum bid or the top bid
+            amount
+          </SheetDescription>
           <form
             onSubmit={handleSubmit(async (data) => {
               clearErrors();

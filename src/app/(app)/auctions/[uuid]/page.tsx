@@ -1,12 +1,11 @@
 import { getAuctionByUUID } from "@/actions/auction";
+import { getBidsByAuctionId } from "@/actions/bid";
+import hero from "@/assets/hero.jpg";
+import { formatDate } from "@/lib/utils";
+import { Avatar, Badge, Card, Heading, Text } from "@radix-ui/themes";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import React from "react";
-import hero from "@/assets/hero.jpg";
-import { Avatar, Badge, Card, Heading, Text } from "@radix-ui/themes";
-import { formatDate } from "@/lib/utils";
 import CreateForm from "./createForm";
-import { getBidsByAuctionId } from "@/actions/bid";
 
 const getAuction = async (uuid: string) => {
   const auction = await getAuctionByUUID(uuid);
@@ -22,19 +21,33 @@ export default async function AuctionDetailsPage({ params }: any) {
   return (
     <div className="container">
       <div className="grid md:grid-cols-[500px,auto] gap-8">
-        <Image alt="auction image" src={hero} className="aspect-square object-cover rounded-3xl md:max-w-[500px]" />
+        <Image
+          alt="auction image"
+          src={hero}
+          className="aspect-square object-cover rounded-3xl md:max-w-[500px]"
+        />
         <div>
           <Heading size="6"> {auction.title} </Heading>
           <Text>{auction.description}</Text>
           <div className="mt-2">
             <Text>
-              Bid starts at <span className="font-bold">Rs.{auction.starting_bid_price.toString()}</span>
+              Bid starts at{" "}
+              <span className="font-bold">
+                Rs.{auction.starting_bid_price.toString()}
+              </span>
             </Text>
           </div>
           <div className="mt-4 space-x-2 flex items-center">
             <Badge size={"3"} color="grass">
               {" "}
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -45,7 +58,14 @@ export default async function AuctionDetailsPage({ params }: any) {
             </Badge>
             <span>-</span>
             <Badge size={"3"} color="tomato">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -59,14 +79,28 @@ export default async function AuctionDetailsPage({ params }: any) {
           <div className="mt-8">
             <div className="flex items-center justify-between">
               <Heading size="5">Top Bids</Heading>
-              <CreateForm minBid={auction.starting_bid_price} topBid={Number(bids[0].amount) ?? auction.starting_bid_price} auctionId={auction.id} />
+              <CreateForm
+                minBid={auction.starting_bid_price}
+                topBid={Number(bids[0]?.amount) ?? auction.starting_bid_price}
+                auctionId={auction.id}
+                auction={auction}
+              />
             </div>
             <div className="mt-4 grid gap-4">
               {bids.map((bid) => {
                 return (
-                  <Card key={bid.id} className="flex items-center justify-between">
+                  <Card
+                    key={bid.id}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex items-center gap-4">
-                      <Avatar fallback src={"https://ui-avatars.com/api/?background=random&name=" + bid.user.first_name} />
+                      <Avatar
+                        fallback
+                        src={
+                          "https://ui-avatars.com/api/?background=random&name=" +
+                          bid.user.first_name
+                        }
+                      />
                       <div>
                         <Text weight={"bold"}>
                           {bid.user.first_name} {bid.user.last_name}

@@ -6,8 +6,9 @@ import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/user";
 // import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { createAuctionSchema } from "@/zod/schemas";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, Status } from "@prisma/client";
 import { writeFile, writeFileSync } from "fs";
+import moment from "moment";
 
 import { getToken } from "next-auth/jwt";
 import { getSession } from "next-auth/react";
@@ -26,7 +27,10 @@ export const createAuction = async (auction: Object, formData: FormData) => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
   try {
-    await writeFileSync(path.join(process.cwd(), "public/" + "filename.jpeg"), buffer);
+    await writeFileSync(
+      path.join(process.cwd(), "public/" + "filename.jpeg"),
+      buffer
+    );
   } catch (e) {
     console.log(e);
   }
@@ -48,6 +52,16 @@ export const createAuction = async (auction: Object, formData: FormData) => {
     },
   });
 
+  if (moment(res.start_date).isSameOrBefore(new Date())) {
+    await prisma.auction.update({
+      where: {
+        id: res.id,
+      },
+      data: {
+        status: "OPEN",
+      },
+    });
+  }
   revalidatePath(HOST_AUCTIONS);
 
   return {
@@ -55,11 +69,48 @@ export const createAuction = async (auction: Object, formData: FormData) => {
   };
 };
 
-export const getAllAuctions = async () => {
+export const getAllAuctions = async ({
+  max,
+  min,
+  active,
+  closed,
+  upcoming,
+  completed,
+}: {
+  min?: number;
+  max?: number;
+  active?: boolean;
+  closed?: boolean;
+  upcoming?: boolean;
+  completed?: boolean;
+}) => {
   const prisma = db;
+  var status: Status[] = [];
+  if (active) {
+    status.push("OPEN");
+  }
+  if (closed) {
+    status.push("CLOSED");
+  }
+  if (upcoming) {
+    status.push("YET_TO_OPEN");
+  }
+  if (completed) {
+    status.push("COMPLETED");
+  }
+
   const auctions = await prisma.auction.findMany({
     orderBy: {
       id: "desc",
+    },
+    where: {
+      starting_bid_price: {
+        gte: min,
+        lte: max,
+      },
+      status: {
+        in: [...status],
+      },
     },
   });
 

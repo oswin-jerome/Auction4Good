@@ -1,36 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { Callout, Card, Checkbox, Flex, Slider, Text, Button as RButton } from "@radix-ui/themes";
+import {
+  Callout,
+  Card,
+  Checkbox,
+  Flex,
+  Slider,
+  Text,
+  Button as RButton,
+} from "@radix-ui/themes";
 import Image from "next/image";
 import React from "react";
 import hero from "@/assets/hero.jpg";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { getAllAuctions } from "@/actions/auction";
-export default async function Auctions() {
-  const auctions = await getAllAuctions();
-  const items = [1, 2, 3, 4, 5, 6, 7, 8];
-
+import SideBar from "./sideBar";
+export default async function Auctions(c: any) {
+  const auctions = await getAllAuctions({
+    min: c.searchParams.min,
+    max: c.searchParams.max,
+    active: c.searchParams.active == "true",
+    closed: c.searchParams.closed == "true",
+    upcoming: c.searchParams.upcoming == "true",
+    completed: c.searchParams.completed == "true",
+  });
   return (
     <div className="container relative grid md:grid-cols-[250px,1fr] gap-4 ">
-      <aside className="hidden md:block p-4 rounded border h-[80dvh]">
-        <h3>Categories</h3>
-        <div className="mt-4 grid gap-2">
-          <Text as="label" size="2">
-            <Flex gap="2">
-              <Checkbox defaultChecked />
-              Products
-            </Flex>
-          </Text>
-          <Text as="label" size="2">
-            <Flex gap="2">
-              <Checkbox defaultChecked />
-              Experiences
-            </Flex>
-          </Text>
-        </div>
-        <h3 className="mt-4 mb-2">Starting Bid </h3>
-        <Slider defaultValue={[25, 75]} />
-      </aside>
+      <SideBar />
 
       <div>
         <Callout.Root className="mb-4 flex items-center justify-between">
@@ -55,11 +51,22 @@ export default async function Auctions() {
                   <Image src={hero} alt="" className="rounded mb-2" />
                   <div>
                     <h4 className="font-bold">{auction.title}</h4>
-                    <p className="text-sm line-clamp-1">{auction.description}</p>
+                    <p className="text-sm line-clamp-1">
+                      {auction.description}
+                    </p>
                     <div className="mt-8 flex justify-between items-center">
-                      <h5 className="font-bold text-lg">Rs. {auction.starting_bid_price.toString()}</h5>
+                      <h5 className="font-bold text-lg">
+                        Rs. {auction.starting_bid_price.toString()}
+                      </h5>
                       <Button className="px-4 flex gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.0} stroke="currentColor" className="w-5 h-5">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.0}
+                          stroke="currentColor"
+                          className="w-5 h-5"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"

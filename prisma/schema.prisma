@@ -42,8 +42,16 @@ model Auction {
   user_id            Int
   user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Bid                Bid[]
+  status             Status   @default(YET_TO_OPEN)
 
   @@map("auctions")
+}
+
+enum Status {
+  YET_TO_OPEN
+  OPEN
+  CLOSED
+  COMPLETED
 }
 
 model Bid {
